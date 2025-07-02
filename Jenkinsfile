@@ -15,7 +15,9 @@ pipeline {
             steps {
                 script {
                     dockerTag = "test"
-                    applicationImage = docker.build("$imageName:$dockerTag", ".")
+                    applicationImage = docker.build(
+                        "$imageName:$dockerTag",
+                        "-f most_matches_single_season/Dockerfile .")
                 }
             }
 
