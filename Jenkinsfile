@@ -1,4 +1,5 @@
 def imageName="football_data"
+def dockerPath="most_matches_single_season/Dockerfile"
 
 pipeline {
     agent {
@@ -15,9 +16,10 @@ pipeline {
             steps {
                 script {
                     dockerTag = "test"
-                    applicationImage = docker.build(
-                        "$imageName:$dockerTag",
-                        "-f most_matches_single_season/Dockerfile .")
+                    sh "docker build -t $imageName:$dockerTag -f $dockerPath"
+                    // applicationImage = docker.build( //To be included with docker workflow plugin
+                    //     "$imageName:$dockerTag",
+                    //     "-f $dockerPath .")
                 }
             }
 
