@@ -15,6 +15,7 @@ pipeline {
         stage ('Build Docker image') {
             steps {
                 script {
+                    sh "newgrp docker"
                     dockerTag = "test"
                     sh "docker build -t $imageName:$dockerTag -f $dockerPath ."
                     // applicationImage = docker.build( //To be included with docker workflow plugin
