@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 
 def test_soup():
+    '''
+    Test docstring
+    '''
     list_of_players = []
     list_of_clubs = []
     with open('sample_data.html', "r") as f:
@@ -11,7 +14,7 @@ def test_soup():
         player_rows = soup.select('table.items tr.odd, table.items tr.even')
         for row in player_rows:
             player_name = row.select_one('a[href*="/profil/spieler/"]').text
-            position = row.select_one()
+            # position = row.select_one()
             club_data = row.select_one('td:has(a[href*="/startseite/verein/"])')
             club_name = club_data.find_all('a')[1].text.strip()
             list_of_players.append(player_name)
