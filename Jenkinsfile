@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     dockerTag = "test"
-                    sh "docker build -t $imageName:$dockerTag -f $dockerPath"
+                    sh "docker build -t $imageName:$dockerTag -f $dockerPath ."
                     // applicationImage = docker.build( //To be included with docker workflow plugin
                     //     "$imageName:$dockerTag",
                     //     "-f $dockerPath .")
