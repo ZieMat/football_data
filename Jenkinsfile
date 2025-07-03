@@ -14,7 +14,7 @@ pipeline {
         stage ('lint/static-analysis'){
             steps {
                 script {
-                    echo "docker-hadolint"
+                    echo "### STEP: DOCKER-HADOLINT ###"
                     sh "docker run --rm -i hadolint/hadolint < $dockerPath"
                 }
             }
@@ -22,7 +22,7 @@ pipeline {
         stage ('package-build') {
             steps {
                 script {
-                    echo "docker-build"
+                    echo "### STEP: DOCKER-BUILD ###"
                     dockerTag = "test"
                     sh "cd mmss && docker build -t $imageName:$dockerTag ."
                     // applicationImage = docker.build( //To be included with docker workflow plugin
