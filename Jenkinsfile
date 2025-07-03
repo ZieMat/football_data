@@ -1,5 +1,5 @@
 def imageName="football_data"
-def dockerPath="most_matches_single_season/Dockerfile"
+def dockerPath="mmss/Dockerfile"
 
 pipeline {
     agent {
@@ -11,10 +11,18 @@ pipeline {
                 checkout scm //Repo configured in the job definition
             }
         }
-
-        stage ('Build Docker image') {
+        stage ('lint/static-analysis'){
             steps {
                 script {
+                    echo "docker-hadolint"
+                    sh "docker run --rm -i hadolint/hadolint < $dockerPath"
+                }
+            }
+        }
+        stage ('package-build') {
+            steps {
+                script {
+                    echo "docker-build"
                     dockerTag = "test"
                     sh "cd mmss && docker build -t $imageName:$dockerTag ."
                     // applicationImage = docker.build( //To be included with docker workflow plugin
