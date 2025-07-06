@@ -39,6 +39,7 @@ pipeline {
                     //     "-f $dockerPath .")
                 }
             }
+        }
         stage ('package-publish') {
             steps {
                 script{
@@ -50,6 +51,6 @@ pipeline {
             }
         }    
 
-        }
+        
     }
 }
