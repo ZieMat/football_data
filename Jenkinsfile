@@ -1,5 +1,8 @@
-def imageName="football_data"
-def dockerPath="mmss/Dockerfile"
+def imageRegistry="192.168.89.150:5000"
+def imageName="football_stats"
+def imageTag="test"
+def fullimageName="$imageRegistry/$imageName:$imageTag" 
+def dockerfilePath="mmss/Dockerfile"
 def srccodePath="mmss/app"
 def lintvenvPath="/opt/python-lint/bin/activate"
 
@@ -8,7 +11,7 @@ pipeline {
         label 'agent'
     }
     stages {
-        stage('Get Code') {
+        stage('source-code-retrieve') {
             steps {
                 checkout scm //Repo configured in the job definition
              //   sh "ls -la" // File debug
@@ -18,7 +21,7 @@ pipeline {
             steps {
                 script {
                     echo "### STEP: DOCKER-HADOLINT ###"
-                    sh "docker run --rm -i hadolint/hadolint < $dockerPath"
+                    sh "docker run --rm -i hadolint/hadolint < $dockerfilePath"
                 }
                 script {
                     echo "### STEP: PYTHON-BLACK ###"
@@ -30,13 +33,22 @@ pipeline {
             steps {
                 script {
                     echo "### STEP: DOCKER-BUILD ###"
-                    dockerTag = "test"
-                    sh "cd mmss && docker build -t $imageName:$dockerTag ."
+                    sh "cd mmss && docker build -t $fullimageName ."
                     // applicationImage = docker.build( //To be included with docker workflow plugin
                     //     "$imageName:$dockerTag",
                     //     "-f $dockerPath .")
                 }
             }
+        stage ('package-publish') {
+            steps {
+                script{
+                    echo "### STEP: DOCKER-PUBLISH ###"
+                    sh "docker push $fullimageName"
+                    echo "### CHECK IMAGE PRESENCE IN REGISTRY"
+                    sh "curl http://$imageRegistry/v2/$imageName/tags/list"
+                }
+            }
+        }    
 
         }
     }
