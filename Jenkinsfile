@@ -1,6 +1,7 @@
 def imageName="football_data"
 def dockerPath="mmss/Dockerfile"
 def srccodePath="mmss/app"
+def lintvenvPath="/opt/python-lint/bin/activate"
 
 pipeline {
     agent {
@@ -21,6 +22,7 @@ pipeline {
                 }
                 script {
                     echo "### STEP: PYTHON-BLACK ###"
+                    sh "source $lintvenvPath"
                     sh "black $srccodePath"
                 }
             }
