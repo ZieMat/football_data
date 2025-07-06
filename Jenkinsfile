@@ -9,6 +9,7 @@ pipeline {
         stage('Get Code') {
             steps {
                 checkout scm //Repo configured in the job definition
+                sh "ls -la"
             }
         }
         stage ('lint/static-analysis'){
@@ -17,6 +18,10 @@ pipeline {
                     echo "### STEP: DOCKER-HADOLINT ###"
                     sh "docker run --rm -i hadolint/hadolint < $dockerPath"
                 }
+                // script {
+                //     echo "### STEP: PYTHON-BLACK ###"
+                //     sh "black"
+                // }
             }
         }
         stage ('package-build') {
