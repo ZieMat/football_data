@@ -22,8 +22,7 @@ pipeline {
                 }
                 script {
                     echo "### STEP: PYTHON-BLACK ###"
-                    sh ". $lintvenvPath" // equal to source in bash
-                    sh "black $srccodePath"
+                    sh ". $lintvenvPath && black $srccodePath" // . is equal to source in bash
                 }
             }
         }
