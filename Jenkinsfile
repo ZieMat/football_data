@@ -1,5 +1,6 @@
 def imageName="football_data"
 def dockerPath="mmss/Dockerfile"
+def srccodePath="mmss/app"
 
 pipeline {
     agent {
@@ -9,7 +10,7 @@ pipeline {
         stage('Get Code') {
             steps {
                 checkout scm //Repo configured in the job definition
-                sh "ls -la"
+             //   sh "ls -la" // File debug
             }
         }
         stage ('lint/static-analysis'){
@@ -18,10 +19,10 @@ pipeline {
                     echo "### STEP: DOCKER-HADOLINT ###"
                     sh "docker run --rm -i hadolint/hadolint < $dockerPath"
                 }
-                // script {
-                //     echo "### STEP: PYTHON-BLACK ###"
-                //     sh "black"
-                // }
+                script {
+                    echo "### STEP: PYTHON-BLACK ###"
+                    sh "black $srccodePath"
+                }
             }
         }
         stage ('package-build') {
