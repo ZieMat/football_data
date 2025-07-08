@@ -23,7 +23,7 @@ pipeline {
                     echo "### STEP: DOCKER-HADOLINT ###"
                     sh "docker run --rm -i hadolint/hadolint < $dockerfilePath"
                 }
-                script{
+                script{ // PASSED
                     echo "### STEP: DOCKER-TRIVY-CONFIG ###"
                     sh "trivy fs --security-checks vuln,secret,config $dockerfilePath"  
                 }
@@ -44,11 +44,13 @@ pipeline {
                 }
             }
         }
-        // stage ('security-scan'){
-        //     steps {
-                
-        //     }
-        //}
+        stage ('security-scan'){
+            steps {
+                script{
+                    sh "trivy image $fullimageName"
+                }
+            }
+        }
         stage ('package-publish') {
             steps {  // PASSED
                 script{
