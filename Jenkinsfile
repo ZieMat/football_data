@@ -44,10 +44,10 @@ pipeline {
                 }
             }
         }
-        stage ('security-scan'){
-            steps {
+        // stage ('security-scan'){
+        //     steps {
                 
-            }
+        //     }
         }
         stage ('package-publish') {
             steps {  // PASSED
