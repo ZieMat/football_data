@@ -25,7 +25,7 @@ pipeline {
                 }
                 script{
                     echo "### STEP: DOCKER-TRIVY-CONFIG ###"
-                    sh "trivy config --security-checks vuln,secret,config $dockerfilePath"  
+                    sh "trivy fs --security-checks vuln,secret,config $dockerfilePath"  
                 }
                 script { // PASSED
                     echo "### STEP: PYTHON-BLACK ###"
