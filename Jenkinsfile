@@ -11,26 +11,30 @@ pipeline {
         label 'agent'
     }
     stages {
-        stage('source-code-retrieve') {
-            steps {
+        stage('source-code-retrieve') { 
+            steps { // PASSED
                 checkout scm //Repo configured in the job definition
              //   sh "ls -la" // File debug
             }
         }
         stage ('lint/static-analysis'){
             steps {
-                script {
+                script { // PASSED
                     echo "### STEP: DOCKER-HADOLINT ###"
                     sh "docker run --rm -i hadolint/hadolint < $dockerfilePath"
                 }
-                script {
+                script{
+                    echo "### STEP: DOCKER-TRIVY-CONFIG ###"
+                    sh "trivy config --security-checks vuln,secret,config $dockerfilePath"  
+                }
+                script { // PASSED
                     echo "### STEP: PYTHON-BLACK ###"
                     sh ". $lintvenvPath && black $srccodePath" // . is equal to source in bash
                 }
             }
         }
         stage ('package-build') {
-            steps {
+            steps { // PASSED
                 script {
                     echo "### STEP: DOCKER-BUILD ###"
                     sh "cd mmss && docker build -t $fullimageName ."
@@ -40,8 +44,13 @@ pipeline {
                 }
             }
         }
-        stage ('package-publish') {
+        stage ('security-scan'){
             steps {
+                
+            }
+        }
+        stage ('package-publish') {
+            steps {  // PASSED
                 script{
                     echo "### STEP: DOCKER-PUBLISH ###"
                     sh "docker push $fullimageName"
