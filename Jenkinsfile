@@ -35,8 +35,7 @@ pipeline {
                 script { // PASSED
                     echo "### STEP: PYTHON-RUFF ###"
                     sh ". $lintvenvPath && ruff check --fix $srccodePath"
-                }
-            }
+                }   
             }
         }
         stage ('package-build') {
