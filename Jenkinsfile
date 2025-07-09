@@ -29,8 +29,14 @@ pipeline {
                 }
                 script { // PASSED
                     echo "### STEP: PYTHON-BLACK ###"
-                    sh ". $lintvenvPath && black $srccodePath" // . is equal to source in bash
+                    sh ". $lintvenvPath" // . in sh is equal to source in bash
+                    sh "black $srccodePath"
                 }
+                script { // PASSED
+                    echo "### STEP: PYTHON-RUFF ###"
+                    sh ". $lintvenvPath && ruff check --fix $srccodePath"
+                }
+            }
             }
         }
         stage ('package-build') {
