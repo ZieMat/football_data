@@ -29,8 +29,7 @@ pipeline {
                 }
                 script { // PASSED
                     echo "### STEP: PYTHON-BLACK ###"
-                    sh ". $lintvenvPath" // . in sh is equal to source in bash
-                    sh "black $srccodePath"
+                    sh ". $lintvenvPath && black $srccodePath" // . in sh is equal to source in bash
                 }
                 script { // PASSED
                     echo "### STEP: PYTHON-RUFF ###"
